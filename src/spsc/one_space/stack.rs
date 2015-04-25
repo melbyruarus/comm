@@ -3,6 +3,7 @@
 use std::{mem};
 use super::imp::{Packet};
 use {Error, Sendable};
+use endpoint;
 
 /// Creates a new SPSC one space channel.
 pub fn new<'a, T: Sendable+'a>() -> Slot<'a, T> {
@@ -56,23 +57,12 @@ pub struct Consumer<'a, T: Sendable+'a> {
     data: Packet<'a, T>,
 }
 
-impl<'a, T: Sendable+'a> Consumer<'a, T> {
-    /// Receives a message from this channel. Doesn't block if the channel is empty.
-    ///
-    /// ### Error
-    ///
-    /// - `Disconnected` - The channel is empty and the sender has disconnected.
-    /// - `Empty` - The channel is empty.
-    pub fn recv_async(&self) -> Result<T, Error> {
+impl<'a, T: Sendable+'a> endpoint::Consumer<'a, T> for Consumer<'a, T> {
+    fn recv_async(&self) -> Result<T, Error> {
         self.data.recv_async()
     }
 
-    /// Receives a message over this channel. Blocks if the channel is empty.
-    ///
-    /// ### Error
-    ///
-    /// - `Disconnected` - The sender has disconnected.
-    pub fn recv_sync(&self) -> Result<T, Error> {
+    fn recv_sync(&self) -> Result<T, Error> {
         self.data.recv_sync()
     }
 }

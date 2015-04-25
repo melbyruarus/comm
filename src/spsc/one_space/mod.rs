@@ -12,6 +12,7 @@ use arc::{Arc, ArcTrait};
 use self::imp::{Packet};
 use select::{Selectable, _Selectable};
 use {Error, Sendable};
+use endpoint;
 
 mod imp;
 pub mod stack;
@@ -56,26 +57,17 @@ pub struct Consumer<'a, T: Sendable+'a> {
     data: Arc<imp::Packet<'a, T>>,
 }
 
-impl<'a, T: Sendable+'a> Consumer<'a, T> {
-    /// Receives a message from this channel. Doesn't block if the channel is empty.
-    ///
-    /// ### Error
-    ///
-    /// - `Disconnected` - The channel is empty and the sender has disconnected.
-    /// - `Empty` - The channel is empty.
-    pub fn recv_async(&self) -> Result<T, Error> {
+impl<'a, T: Sendable+'a> endpoint::Consumer<'a, T> for Consumer<'a, T> {
+    fn recv_async(&self) -> Result<T, Error> {
         self.data.recv_async()
     }
 
-    /// Receives a message over this channel. Blocks if the channel is empty.
-    ///
-    /// ### Error
-    ///
-    /// - `Disconnected` - The sender has disconnected.
-    pub fn recv_sync(&self) -> Result<T, Error> {
+    fn recv_sync(&self) -> Result<T, Error> {
         self.data.recv_sync()
     }
+}
 
+impl<'a, T: Sendable+'a> Consumer<'a, T> {
     /// Returns whether the channel is non-empty.
     pub fn can_recv(&self) -> bool {
         self.data.ready()

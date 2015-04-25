@@ -93,6 +93,7 @@ pub use marker::{Sendable};
 
 mod sortedvec;
 mod marker;
+mod endpoint;
 
 pub mod arc;
 pub mod select;

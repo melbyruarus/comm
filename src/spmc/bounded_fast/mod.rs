@@ -3,6 +3,7 @@
 use arc::{Arc, ArcTrait};
 use select::{Selectable, _Selectable};
 use {Error, Sendable};
+use endpoint;
 
 mod imp;
 #[cfg(test)] mod test;
@@ -60,23 +61,12 @@ pub struct Consumer<'a, T: Sendable+'a> {
     data: Arc<imp::Packet<'a, T>>,
 }
 
-impl<'a, T: Sendable+'a> Consumer<'a, T> {
-    /// Receives a message from the channel. Blocks if the channel is empty.
-    ///
-    /// ### Error
-    ///
-    /// - `Disconnected` - The sender has disconnected and the channel is empty.
-    pub fn recv_sync(&self) -> Result<T, Error> {
+impl<'a, T: Sendable+'a> endpoint::Consumer<'a, T> for Consumer<'a, T> {
+    fn recv_sync(&self) -> Result<T, Error> {
         self.data.recv_sync()
     }
 
-    /// Receives a message over the channel. Does not block if the channel is empty.
-    ///
-    /// ### Error
-    ///
-    /// - `Disconnected` - The sender has disconnected and the channel is empty.
-    /// - `Empty` - The buffer is empty.
-    pub fn recv_async(&self) -> Result<T, Error> {
+    fn recv_async(&self) -> Result<T, Error> {
         self.data.recv_async(false)
     }
 }
