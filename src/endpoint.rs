@@ -1,7 +1,7 @@
 use {Error, Sendable};
 use select::Selectable;
 
-pub trait Consumer<'a, T: Sendable+'a> : Sized + Selectable<'a> {
+pub trait Consumer<T: Sendable> : Selectable {
     /// Receives a message over this channel. Blocks until a message is available.
     ///
     /// ### Errors

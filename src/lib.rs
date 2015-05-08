@@ -93,14 +93,14 @@ pub use marker::{Sendable};
 
 mod sortedvec;
 mod marker;
-mod endpoint;
 
+pub mod endpoint;
 pub mod arc;
 pub mod select;
 pub mod spsc;
-pub mod spmc;
-pub mod mpsc;
-pub mod mpmc;
+// pub mod spmc;
+// pub mod mpsc;
+// pub mod mpmc;
 
 /// Errors that can happen during receiving and sending.
 ///

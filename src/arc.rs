@@ -144,11 +144,9 @@ impl<T> Arc<T> {
 
     /// Creates an ArcTrait from an Arc. `t` must be a trait object created by calling
     /// `&*self as &Trait`. Otherwise the behavior is undefined.
-    pub unsafe fn as_trait<Trait: ?Sized>(&self, t: &Trait) -> ArcTrait<Trait> {
+    pub unsafe fn as_trait<Trait: ?Sized>(&self, t: TraitObject) -> ArcTrait<Trait> {
         assert!(mem::size_of::<&Trait>() == mem::size_of::<TraitObject>());
-
-        let _trait = ptr::read(&t as *const _ as *const TraitObject);
-        assert!(_trait.data as usize == &self.inner().data as *const _ as usize);
+        assert!(t.data as usize == &self.inner().data as *const _ as usize);
 
         self.inner().strong.fetch_add(1, Relaxed);
 
@@ -156,7 +154,7 @@ impl<T> Arc<T> {
             _size: mem::size_of::<ArcInner<T>>(),
             _alignment: mem::min_align_of::<ArcInner<T>>(),
             _destructor: ptr_drop::<T>,
-            _trait: _trait,
+            _trait: t,
 
             _ptr: mem::transmute(self._ptr),
 
