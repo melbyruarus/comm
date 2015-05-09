@@ -1,5 +1,5 @@
 use std::{ptr, mem};
-use std::num::{Int};
+
 use std::sync::atomic::{AtomicUsize, AtomicBool, Ordering};
 use std::sync::{Mutex, Condvar};
 use std::rt::heap::{allocate, deallocate};
@@ -208,7 +208,7 @@ impl<T: Sendable> Packet<T> {
 unsafe impl<T: Sendable> Send for Packet<T> { }
 unsafe impl<T: Sendable> Sync for Packet<T> { }
 
-#[unsafe_destructor]
+
 impl<T: Sendable> Drop for Packet<T> {
     fn drop(&mut self) {
         let (write_pos, read_pos) = self.get_pos();

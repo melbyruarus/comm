@@ -1,5 +1,5 @@
 use std::{ptr, mem, cmp};
-use std::num::{Int};
+
 use std::sync::atomic::{AtomicUsize, AtomicBool};
 use std::sync::atomic::Ordering::{SeqCst};
 use std::sync::{Mutex, Condvar};
@@ -290,7 +290,7 @@ impl<'a, T: Sendable+'a> Packet<'a, T> {
 unsafe impl<'a, T: Sendable+'a> Send for Packet<'a, T> { }
 unsafe impl<'a, T: Sendable+'a> Sync for Packet<'a, T> { }
 
-#[unsafe_destructor]
+
 impl<'a, T: Sendable+'a> Drop for Packet<'a, T> {
     fn drop(&mut self) {
         while self.recv_async(false).is_ok() { }

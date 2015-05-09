@@ -49,7 +49,7 @@ impl<'a, T: Sendable+'a> Producer<'a, T> {
 
 unsafe impl<'a, T: Sendable+'a> Send for Producer<'a, T> { }
 
-#[unsafe_destructor]
+
 impl<'a, T: Sendable+'a> Drop for Producer<'a, T> {
     fn drop(&mut self) {
         self.data.remove_sender();
@@ -80,7 +80,7 @@ impl<'a, T: Sendable+'a> Clone for Consumer<'a, T> {
     }
 }
 
-#[unsafe_destructor]
+
 impl<'a, T: Sendable+'a> Drop for Consumer<'a, T> {
     fn drop(&mut self) {
         self.data.remove_receiver();

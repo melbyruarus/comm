@@ -184,7 +184,7 @@ impl<T: Sendable> Packet<T> {
 unsafe impl<T: Sendable> Send for Packet<T> { }
 unsafe impl<T: Sendable> Sync for Packet<T> { }
 
-#[unsafe_destructor]
+
 impl<T: Sendable> Drop for Packet<T> {
     fn drop(&mut self) {
         while self.recv_async().is_ok() { }

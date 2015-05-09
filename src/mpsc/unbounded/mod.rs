@@ -41,7 +41,7 @@ impl<'a, T: Sendable+'a> Clone for Producer<'a, T> {
     }
 }
 
-#[unsafe_destructor]
+
 impl<'a, T: Sendable+'a> Drop for Producer<'a, T> {
     fn drop(&mut self) {
         self.data.remove_sender()
@@ -65,7 +65,7 @@ impl<'a, T: Sendable+'a> endpoint::Consumer<'a, T> for Consumer<'a, T> {
     }
 }
 
-#[unsafe_destructor]
+
 impl<'a, T: Sendable+'a> Drop for Consumer<'a, T> {
     fn drop(&mut self) {
         self.data.remove_receiver()

@@ -44,7 +44,7 @@ impl<T: Sendable> Producer<T> {
 
 unsafe impl<T: Sendable> Send for Producer<T> { }
 
-#[unsafe_destructor]
+
 impl<T: Sendable> Drop for Producer<T> {
     fn drop(&mut self) {
         self.data.sender_disconnect();
@@ -79,7 +79,7 @@ impl<T: Sendable> Consumer<T> {
 
 unsafe impl<T: Sendable> Send for Consumer<T> { }
 
-#[unsafe_destructor]
+
 impl<T: Sendable> Drop for Consumer<T> {
     fn drop(&mut self) {
         self.data.recv_disconnect();
